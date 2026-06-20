@@ -8,15 +8,15 @@ spring:
     gateway:
       discovery:
         locator:
-          enabled: true
+          # APAGAMOS EL PILOTO AUTOMÁTICO. Ahora solo usará la ruta que escribimos abajo.
+          enabled: false
       routes:
-        - id: ms-usuarios
-          # Ruta directa e infalible
+        - id: ruta-directa-usuarios
           uri: https://imaginative-caring-production.up.railway.app
           predicates:
             - Path=/api/usuarios/**
           filters:
-            # Este filtro es clave: le dice a Railway que vamos al microservicio correcto
+            # Engañamos a la seguridad de Railway para que nos deje pasar
             - SetRequestHeader=Host, imaginative-caring-production.up.railway.app
 
 eureka:
