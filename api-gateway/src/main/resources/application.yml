@@ -4,46 +4,6 @@ server:
 spring:
   application:
     name: api-gateway
-  cloud:
-    gateway:
-      discovery:
-        locator:
-          enabled: true
-  routes:
-        - id: ms-usuarios
-          uri: lb://MS-USUARIOS
-          predicates:
-            - Path=/api/usuarios/**
-        - id: ms-hilos
-          uri: lb://MS-HILOS
-          predicates:
-            - Path=/api/hilos/**
-        - id: ms-categorias
-          uri: lb://MS-CATEGORIAS
-          predicates:
-            - Path=/api/categorias/**
-        - id: ms-comentarios
-          uri: lb://MS-COMENTARIOS
-          predicates:
-            - Path=/api/comentarios/**
-        - id: ms-reacciones
-          uri: lb://MS-REACCIONES
-          predicates:
-            - Path=/api/reacciones/**
-        - id: ms-notificaciones
-          uri: lb://MS-NOTIFICACIONES
-          predicates:
-            - Path=/api/notificaciones/**
-globalcors:
-  corsConfigurations:
-    '[/**]':
-      allowedOrigins: "*"
-      allowedMethods:
-        - GET
-        - POST
-        - PUT
-        - DELETE
-      allowedHeaders: "*"
 
 eureka:
   client:
