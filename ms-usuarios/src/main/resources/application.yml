@@ -2,7 +2,7 @@ spring:
   application:
     name: ms-usuarios
   datasource:
-    # Si Railway no encuentra una variable, usará lo que está después de los dos puntos (localhost)
+    # Si Railway no encuentra la variable, usará los valores por defecto (asegúrate de que estén configurados en Railway)
     url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/foro_usuarios_db}
     username: ${SPRING_DATASOURCE_USERNAME:root}
     password: ${SPRING_DATASOURCE_PASSWORD:}
@@ -14,13 +14,15 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-  eureka:
-    client:
-      service-url:
-        defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
-    instance:
-      prefer-ip-address: true
+eureka:
+  client:
+    service-url:
+      # Corregido: Si la variable de entorno no existe, apunta a la URL real de Railway en lugar de localhost
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:https://jdm-70-production.up.railway.app/eureka/}
+    register-with-eureka: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
 
 server:
-  # Railway suele inyectar una variable llamada PORT, si no, usa el 8081
   port: ${PORT:8081}

@@ -4,10 +4,21 @@ server:
 spring:
   application:
     name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: ms-usuarios
+          uri: lb://MS-USUARIOS
+          predicates:
+            - Path=/api/usuarios/**
 
 eureka:
   client:
     service-url:
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+      # He cambiado el fallback a la URL real. Si la variable falla, esto no irá a localhost.
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:https://jdm-70-production.up.railway.app/eureka/}
     register-with-eureka: true
     fetch-registry: true
