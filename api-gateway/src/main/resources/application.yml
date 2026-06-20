@@ -11,13 +11,13 @@ spring:
           enabled: true
       routes:
         - id: ms-usuarios
-          # Usamos la ruta directa que ya comprobamos que funciona
+          # Ruta directa e infalible
           uri: https://imaginative-caring-production.up.railway.app
           predicates:
             - Path=/api/usuarios/**
           filters:
-            # Este es el filtro básico que te pide la rúbrica y que evita el error 502
-            - RemoveRequestHeader=Host
+            # Este filtro es clave: le dice a Railway que vamos al microservicio correcto
+            - SetRequestHeader=Host, imaginative-caring-production.up.railway.app
 
 eureka:
   client:
