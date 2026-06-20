@@ -9,18 +9,17 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
-eureka:
-  client:
-    service-url:
-      # Si Railway no tiene esta variable, buscará en localhost:8761
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
-    register-with-eureka: true
-    fetch-registry: true
+  eureka:
+    client:
+      service-url:
+        defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
+    instance:
+      prefer-ip-address: true
 
 server:
   # Railway suele inyectar una variable llamada PORT, si no, usa el 8081

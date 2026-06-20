@@ -4,6 +4,10 @@ import com.foro.ms_usuarios.dto.UsuarioRequestDTO;
 import com.foro.ms_usuarios.dto.UsuarioResponseDTO;
 import com.foro.ms_usuarios.service.UsuarioService;
 import jakarta.validation.Valid;
+
+// Asegúrate de que esta sea la única importación de List
+import java.util.List; 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,32 +20,46 @@ public class UsuarioController {
     @Autowired
     private UsuarioService service;
 
+    // ==========================================
+    // ➕ CREAR
+    // ==========================================
     @PostMapping
     public ResponseEntity<UsuarioResponseDTO> crear(@Valid @RequestBody UsuarioRequestDTO request) {
         UsuarioResponseDTO response = service.crearUsuario(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> obtenerPorId(@PathVariable Long id) {
-        return new ResponseEntity<>(service.obtenerPorId(id), HttpStatus.OK);
-    }
     // ==========================================
-    // 🛠️ RUTA PARA ACTUALIZAR (PUT)
+    // 📋 LISTAR TODOS (¡Corregido y blindado!)
     // ==========================================
-    @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> actualizar(@PathVariable Long id, @Valid @RequestBody UsuarioRequestDTO request) {
-        UsuarioResponseDTO response = service.actualizarUsuario(id, request);
-        return new ResponseEntity<>(response, HttpStatus.OK); // Retorna 200 OK
+    @GetMapping(path = "/lista") 
+    public ResponseEntity<List<UsuarioResponseDTO>> listarTodos() {
+        return new ResponseEntity<>(service.listarTodos(), HttpStatus.OK);
     }
 
     // ==========================================
-    // 🗑️ RUTA PARA ELIMINAR (DELETE)
+    // 🔍 BUSCAR POR ID
     // ==========================================
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<UsuarioResponseDTO> obtenerPorId(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(service.obtenerPorId(id), HttpStatus.OK);
+    }
+
+    // ==========================================
+    // 🛠️ ACTUALIZAR (PUT)
+    // ==========================================
+    @PutMapping(path = "/{id}")
+    public ResponseEntity<UsuarioResponseDTO> actualizar(@PathVariable("id") Long id, @Valid @RequestBody UsuarioRequestDTO request) {
+        UsuarioResponseDTO response = service.actualizarUsuario(id, request);
+        return new ResponseEntity<>(response, HttpStatus.OK); 
+    }
+
+    // ==========================================
+    // 🗑️ ELIMINAR (DELETE)
+    // ==========================================
+    @DeleteMapping(path = "/{id}")
+    public ResponseEntity<Void> eliminar(@PathVariable("id") Long id) {
         service.eliminarUsuario(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT); // Retorna 204 Sin Contenido (éxito al borrar)
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT); 
     }
 }

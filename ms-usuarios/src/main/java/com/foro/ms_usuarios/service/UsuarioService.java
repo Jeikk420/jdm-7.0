@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class UsuarioService {
 
@@ -27,7 +30,6 @@ public class UsuarioService {
     public UsuarioResponseDTO crearUsuario(UsuarioRequestDTO dto) {
         log.info("Iniciando creación de usuario: " + dto.getUsername());
 
-        // 🔥 VALIDACIÓN: Verificar si ya existe
         if (repository.existsByUsername(dto.getUsername())) {
             throw new RuntimeException("El nombre de usuario '" + dto.getUsername() + "' ya está registrado.");
         }
@@ -90,6 +92,15 @@ public class UsuarioService {
         Usuario usuario = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + id));
         return convertirADTO(usuario);
+    }
+
+    // ==========================================
+    // 📋 MÉTODO PARA LISTAR TODOS
+    // ==========================================
+    public List<UsuarioResponseDTO> listarTodos() {
+        return repository.findAll().stream()
+                .map(this::convertirADTO)
+                .collect(Collectors.toList());
     }
 
     // 👉 MÉTODO AUXILIAR PARA LIMPIAR CÓDIGO (DRY)
