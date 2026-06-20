@@ -2,14 +2,13 @@ spring:
   application:
     name: ms-usuarios
   datasource:
-    # Si Railway no encuentra la variable, usará los valores por defecto (asegúrate de que estén configurados en Railway)
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3306/foro_usuarios_db}
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysql.railway.internal:3306/railway}
     username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD:}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
@@ -17,12 +16,12 @@ spring:
 eureka:
   client:
     service-url:
-      # Corregido: Si la variable de entorno no existe, apunta a la URL real de Railway en lugar de localhost
-      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:https://jdm-70-production.up.railway.app/eureka/}
+      defaultZone: https://jdm-70-production.up.railway.app/eureka/
     register-with-eureka: true
     fetch-registry: true
   instance:
     prefer-ip-address: true
+    hostname: ${RAILWAY_PRIVATE_DOMAIN}
 
 server:
   port: ${PORT:8081}

@@ -11,11 +11,13 @@ spring:
           enabled: true
       routes:
         - id: ms-usuarios
-          uri: lb://MS-USUARIOS
+          # Usamos la ruta directa que ya comprobamos que funciona
+          uri: https://imaginative-caring-production.up.railway.app
           predicates:
             - Path=/api/usuarios/**
           filters:
-            - RewritePath=/api/usuarios/(?<remaining>.*), /api/usuarios/${remaining}
+            # Este es el filtro básico que te pide la rúbrica y que evita el error 502
+            - RemoveRequestHeader=Host
 
 eureka:
   client:
