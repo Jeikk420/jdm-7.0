@@ -2,9 +2,10 @@ spring:
   application:
     name: ms-usuarios
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://mysql.railway.internal:3306/railway}
+    # Si está local usa el puerto 3307 (Docker), si está en Railway usa la variable
+    url: ${SPRING_DATASOURCE_URL:jdbc:mysql://localhost:3307/foro_jdm_db}
     username: ${SPRING_DATASOURCE_USERNAME:root}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    password: ${SPRING_DATASOURCE_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
@@ -13,15 +14,16 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
 
+server:
+  port: ${PORT:8081}
+  # ESTA LÍNEA MÁGICA ARREGLA EL ERROR CORS DE SWAGGER EN RAILWAY
+  forward-headers-strategy: framework
+
 eureka:
   client:
     service-url:
-      defaultZone: https://jdm-70-production.up.railway.app/eureka/
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE:http://localhost:8761/eureka/}
     register-with-eureka: true
     fetch-registry: true
   instance:
     prefer-ip-address: true
-    hostname: ${RAILWAY_PRIVATE_DOMAIN}
-
-server:
-  port: ${PORT:8081}
